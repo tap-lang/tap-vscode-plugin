@@ -1,0 +1,125 @@
+{
+    "name": "4yue-vscode-plugin",
+    "displayName": "4yue Language Support",
+    "publisher": "heropoo",
+    "description": "Language support and compiler commands for the 4yue programming language.",
+    "version": "0.0.1",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/4yue-lang/4yue-vscode-plugin"
+    },
+    "homepage": "https://github.com/4yue-lang/4yue-vscode-plugin/blob/main/README.md",
+    "engines": {
+        "vscode": "^1.46.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "keywords": [
+        "4yue",
+        "tp",
+        "llvm",
+        "language"
+    ],
+    "activationEvents": [
+        "onLanguage:4yue",
+        "onCommand:4yue.runFile",
+        "onCommand:4yue.emitIR",
+        "onCommand:4yue.lexFile",
+        "onCommand:4yue.parseFile"
+    ],
+    "main": "./extension.js",
+    "contributes": {
+        "configuration": {
+            "title": "4yue",
+            "properties": {
+                "4yue.executablePath": {
+                    "type": "string",
+                    "default": "4yue",
+                    "description": "Path to the 4yue compiler executable."
+                }
+            }
+        },
+        "languages": [
+            {
+                "id": "4yue",
+                "aliases": [
+                    "4yue",
+                    "4yue Lang",
+                    "4yue language"
+                ],
+                "extensions": [
+                    ".tp",
+                    ".4yue"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "4yue",
+                "scopeName": "source.4yue",
+                "path": "./syntaxes/4yue.tmLanguage.json"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "4yue",
+                "path": "./snippets/4yue.json"
+            }
+        ],
+        "commands": [
+            {
+                "command": "4yue.runFile",
+                "title": "4yue: Run File",
+                "category": "4yue"
+            },
+            {
+                "command": "4yue.emitIR",
+                "title": "4yue: Emit LLVM IR",
+                "category": "4yue"
+            },
+            {
+                "command": "4yue.lexFile",
+                "title": "4yue: Lex File",
+                "category": "4yue"
+            },
+            {
+                "command": "4yue.parseFile",
+                "title": "4yue: Parse File",
+                "category": "4yue"
+            }
+        ],
+        "menus": {
+            "editor/title": [
+                {
+                    "command": "4yue.runFile",
+                    "when": "resourceLangId == '4yue'",
+                    "group": "navigation"
+                }
+            ],
+            "editor/context": [
+                {
+                    "command": "4yue.runFile",
+                    "when": "resourceLangId == '4yue'",
+                    "group": "4yue@1"
+                },
+                {
+                    "command": "4yue.emitIR",
+                    "when": "resourceLangId == '4yue'",
+                    "group": "4yue@2"
+                },
+                {
+                    "command": "4yue.lexFile",
+                    "when": "resourceLangId == '4yue'",
+                    "group": "4yue@3"
+                },
+                {
+                    "command": "4yue.parseFile",
+                    "when": "resourceLangId == '4yue'",
+                    "group": "4yue@4"
+                }
+            ]
+        }
+    }
+}
