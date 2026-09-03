@@ -6,9 +6,9 @@
     "version": "0.0.1",
     "repository": {
         "type": "git",
-        "url": "https://github.com/4yue-lang/4yue-vscode-plugin"
+        "url": "https://github.com/heropoo/4yue-vscode-plugin"
     },
-    "homepage": "https://github.com/4yue-lang/4yue-vscode-plugin/blob/main/README.md",
+    "homepage": "https://github.com/heropoo/4yue-vscode-plugin/blob/main/README.md",
     "engines": {
         "vscode": "^1.46.0"
     },

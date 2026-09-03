@@ -77,7 +77,7 @@ If `4yue` is not on `PATH`, add this to your VS Code settings:
 
 ```json
 {
-    "4yue.executablePath": "E:\\projects\\c-projects\\4yue\\build\\4yue.exe"
+    "4yue.executablePath": "C:\\projects\\4yue\\build\\4yue.exe"
 }
 ```
 
