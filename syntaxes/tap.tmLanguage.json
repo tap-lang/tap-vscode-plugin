@@ -1,0 +1,110 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "tap",
+    "scopeName": "source.tap",
+    "patterns": [
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#numbers"
+        },
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#types"
+        },
+        {
+            "include": "#functions"
+        },
+        {
+            "include": "#operators"
+        }
+    ],
+    "repository": {
+        "comments": {
+            "patterns": [
+                {
+                    "name": "comment.line.double-slash.tap",
+                    "match": "//.*$"
+                },
+                {
+                    "name": "comment.block.tap",
+                    "begin": "/\\*",
+                    "end": "\\*/"
+                }
+            ]
+        },
+        "strings": {
+            "name": "string.quoted.double.tap",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                {
+                    "name": "constant.character.escape.tap",
+                    "match": "\\\\([\\\\\"nrt0]|x[0-9A-Fa-f]{2}|.)"
+                }
+            ]
+        },
+        "numbers": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.float.tap",
+                    "match": "\\b[0-9]+\\.[0-9]+\\b"
+                },
+                {
+                    "name": "constant.numeric.integer.tap",
+                    "match": "\\b[0-9]+\\b"
+                }
+            ]
+        },
+        "keywords": {
+            "patterns": [
+                {
+                    "name": "keyword.control.tap",
+                    "match": "\\b(if|elseif|else|for|break|continue|return)\\b"
+                },
+                {
+                    "name": "keyword.declaration.tap",
+                    "match": "\\b(fn|let|import|as)\\b"
+                },
+                {
+                    "name": "support.function.builtin.tap",
+                    "match": "\\b(print|min|max|abs|square)\\b"
+                },
+                {
+                    "name": "constant.language.boolean.tap",
+                    "match": "\\b(true|false)\\b"
+                }
+            ]
+        },
+        "types": {
+            "name": "storage.type.tap",
+            "match": "\\b(int|uint|i8|u8|i16|u16|i32|u32|i64|u64|i128|u128|float|f32|f64|bool|string|array)\\b"
+        },
+        "functions": {
+            "patterns": [
+                {
+                    "match": "\\bfn\\s+([A-Za-z_][A-Za-z0-9_]*)",
+                    "captures": {
+                        "1": {
+                            "name": "entity.name.function.definition.tap"
+                        }
+                    }
+                },
+                {
+                    "name": "support.function.call.tap",
+                    "match": "\\b[A-Za-z_][A-Za-z0-9_]*(?=\\s*\\()"
+                }
+            ]
+        },
+        "operators": {
+            "name": "keyword.operator.tap",
+            "match": "(==|!=|<=|>=|&&|\\|\\||\\+\\+|--|[+\\-*/=<>:.,;])"
+        }
+    }
+}

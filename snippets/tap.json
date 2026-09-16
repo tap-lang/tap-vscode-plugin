@@ -1,0 +1,69 @@
+{
+    "Function": {
+        "prefix": "fn",
+        "body": [
+            "fn ${1:name}(${2:args}): ${3:i32} {",
+            "    ${0}",
+            "}"
+        ],
+        "description": "Define a tap function"
+    },
+    "Main Function": {
+        "prefix": "main",
+        "body": [
+            "fn main(): i32 {",
+            "    ${0:return 0;}",
+            "}"
+        ],
+        "description": "Define a main entry point"
+    },
+    "Variable": {
+        "prefix": "let",
+        "body": "let ${1:name}: ${2:i32} = ${3:value};",
+        "description": "Declare a typed variable"
+    },
+    "Import": {
+        "prefix": "import",
+        "body": "import ${1:std.math};",
+        "description": "Import a module"
+    },
+    "Import Alias": {
+        "prefix": "importas",
+        "body": "import ${1:std.math} as ${2:m};",
+        "description": "Import a module with an alias"
+    },
+    "If": {
+        "prefix": "if",
+        "body": [
+            "if (${1:condition}) {",
+            "    ${0}",
+            "}"
+        ],
+        "description": "Create an if statement"
+    },
+    "If Else": {
+        "prefix": "ife",
+        "body": [
+            "if (${1:condition}) {",
+            "    ${2}",
+            "} else {",
+            "    ${0}",
+            "}"
+        ],
+        "description": "Create an if/else statement"
+    },
+    "For Loop": {
+        "prefix": "for",
+        "body": [
+            "for (let ${1:i}: ${2:i32} = ${3:0}; ${1:i} < ${4:10}; ${1:i}++) {",
+            "    ${0}",
+            "}"
+        ],
+        "description": "Create a three-part for loop"
+    },
+    "Print": {
+        "prefix": "print",
+        "body": "print(\"${1:%d\\\\n}\", ${2:value});",
+        "description": "Print values"
+    }
+}
