@@ -2,7 +2,10 @@
 
 ## [Unreleased]
 
-- Rename the language extension to 4yue.
-- Add `.tp` and `.4yue` file association.
-- Add richer 4yue syntax highlighting, snippets, and language configuration.
+- Rename the language extension to tap.
+- Add `.tp` and `.tap` file association.
+- Add richer tap syntax highlighting, snippets, and language configuration.
 - Add commands for run, LLVM IR emission, lexing, and parsing.
+- Add compile command, configurable compiler arguments, compiler environment
+  variables, cancellation support, Problems diagnostics, and a `$tap` task
+  problem matcher.

@@ -1,12 +1,12 @@
 fn main(): i32 {
-    print("Hello 4yue ~ 😀\n");
+    print("Hello tap ~ 😀\n");
     return 0;
 }
 
 
 /** -- test
 - .stdout
-Hello 4yue ~ 😀
+Hello tap ~ 😀
 
 - .exit
 0

@@ -1,14 +1,14 @@
 {
-    "name": "4yue-vscode-plugin",
-    "displayName": "4yue Language Support",
+    "name": "tap-vscode-plugin",
+    "displayName": "tap Language Support",
     "publisher": "heropoo",
-    "description": "Language support and compiler commands for the 4yue programming language.",
-    "version": "0.0.1",
+    "description": "Language support and compiler commands for the tap programming language.",
+    "version": "0.1.1",
     "repository": {
         "type": "git",
-        "url": "https://github.com/heropoo/4yue-vscode-plugin"
+        "url": "https://github.com/heropoo/tap-vscode-plugin"
     },
-    "homepage": "https://github.com/heropoo/4yue-vscode-plugin/blob/main/README.md",
+    "homepage": "https://github.com/heropoo/tap-vscode-plugin/blob/main/README.md",
     "engines": {
         "vscode": "^1.46.0"
     },
@@ -16,110 +16,224 @@
         "Programming Languages"
     ],
     "keywords": [
-        "4yue",
+        "tap",
         "tp",
         "llvm",
         "language"
     ],
     "activationEvents": [
-        "onLanguage:4yue",
-        "onCommand:4yue.runFile",
-        "onCommand:4yue.emitIR",
-        "onCommand:4yue.lexFile",
-        "onCommand:4yue.parseFile"
+        "onLanguage:tap",
+        "onCommand:tap.compileFile",
+        "onCommand:tap.runFile",
+        "onCommand:tap.emitIR",
+        "onCommand:tap.lexFile",
+        "onCommand:tap.parseFile"
     ],
     "main": "./extension.js",
     "contributes": {
         "configuration": {
-            "title": "4yue",
+            "title": "tap",
             "properties": {
-                "4yue.executablePath": {
+                "tap.executablePath": {
                     "type": "string",
-                    "default": "4yue",
-                    "description": "Path to the 4yue compiler executable."
+                    "default": "tap",
+                    "description": "Path to the tap compiler executable."
+                },
+                "tap.compilerArgs": {
+                    "type": "array",
+                    "default": [],
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Arguments passed to every tap compiler invocation before the command-specific arguments."
+                },
+                "tap.workingDirectory": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Working directory for tap compiler commands. Leave empty to use the workspace folder, or the source file directory when no workspace is open. Supports ${workspaceFolder}, ${file}, ${fileDirname}, and ${cwd}."
+                },
+                "tap.environment": {
+                    "type": "object",
+                    "default": {},
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "Environment variables passed to tap compiler commands. Values support ${workspaceFolder}, ${file}, ${fileDirname}, and ${cwd}."
+                },
+                "tap.compileArgs": {
+                    "type": "array",
+                    "default": [],
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Arguments passed when running tap: Compile File. The source file path is appended automatically."
+                },
+                "tap.runArgs": {
+                    "type": "array",
+                    "default": [
+                        "run"
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Arguments passed when running tap: Run File. The source file path is appended automatically."
+                },
+                "tap.emitIRArgs": {
+                    "type": "array",
+                    "default": [
+                        "-ir"
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Arguments passed when running tap: Emit LLVM IR. The source file path is appended automatically."
+                },
+                "tap.lexArgs": {
+                    "type": "array",
+                    "default": [
+                        "-lex"
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Arguments passed when running tap: Lex File. The source file path is appended automatically."
+                },
+                "tap.parseArgs": {
+                    "type": "array",
+                    "default": [
+                        "-parse"
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Arguments passed when running tap: Parse File. The source file path is appended automatically."
+                },
+                "tap.enableDiagnostics": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Parse tap compiler output and publish matching diagnostics to the Problems panel."
+                },
+                "tap.clearDiagnosticsOnRun": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Clear previous tap diagnostics before publishing diagnostics from a new compiler run."
                 }
             }
         },
         "languages": [
             {
-                "id": "4yue",
+                "id": "tap",
                 "aliases": [
-                    "4yue",
-                    "4yue Lang",
-                    "4yue language"
+                    "tap",
+                    "tap Lang",
+                    "tap language"
                 ],
                 "extensions": [
                     ".tp",
-                    ".4yue"
+                    ".tap"
                 ],
                 "configuration": "./language-configuration.json"
             }
         ],
         "grammars": [
             {
-                "language": "4yue",
-                "scopeName": "source.4yue",
-                "path": "./syntaxes/4yue.tmLanguage.json"
+                "language": "tap",
+                "scopeName": "source.tap",
+                "path": "./syntaxes/tap.tmLanguage.json"
             }
         ],
         "snippets": [
             {
-                "language": "4yue",
-                "path": "./snippets/4yue.json"
+                "language": "tap",
+                "path": "./snippets/tap.json"
             }
         ],
         "commands": [
             {
-                "command": "4yue.runFile",
-                "title": "4yue: Run File",
-                "category": "4yue"
+                "command": "tap.compileFile",
+                "title": "tap: Compile File",
+                "category": "tap"
             },
             {
-                "command": "4yue.emitIR",
-                "title": "4yue: Emit LLVM IR",
-                "category": "4yue"
+                "command": "tap.runFile",
+                "title": "tap: Run File",
+                "category": "tap"
             },
             {
-                "command": "4yue.lexFile",
-                "title": "4yue: Lex File",
-                "category": "4yue"
+                "command": "tap.emitIR",
+                "title": "tap: Emit LLVM IR",
+                "category": "tap"
             },
             {
-                "command": "4yue.parseFile",
-                "title": "4yue: Parse File",
-                "category": "4yue"
+                "command": "tap.lexFile",
+                "title": "tap: Lex File",
+                "category": "tap"
+            },
+            {
+                "command": "tap.parseFile",
+                "title": "tap: Parse File",
+                "category": "tap"
             }
         ],
         "menus": {
             "editor/title": [
                 {
-                    "command": "4yue.runFile",
-                    "when": "resourceLangId == '4yue'",
+                    "command": "tap.compileFile",
+                    "when": "resourceLangId == 'tap'",
+                    "group": "navigation"
+                },
+                {
+                    "command": "tap.runFile",
+                    "when": "resourceLangId == 'tap'",
                     "group": "navigation"
                 }
             ],
             "editor/context": [
                 {
-                    "command": "4yue.runFile",
-                    "when": "resourceLangId == '4yue'",
-                    "group": "4yue@1"
+                    "command": "tap.compileFile",
+                    "when": "resourceLangId == 'tap'",
+                    "group": "tap@1"
                 },
                 {
-                    "command": "4yue.emitIR",
-                    "when": "resourceLangId == '4yue'",
-                    "group": "4yue@2"
+                    "command": "tap.runFile",
+                    "when": "resourceLangId == 'tap'",
+                    "group": "tap@2"
                 },
                 {
-                    "command": "4yue.lexFile",
-                    "when": "resourceLangId == '4yue'",
-                    "group": "4yue@3"
+                    "command": "tap.emitIR",
+                    "when": "resourceLangId == 'tap'",
+                    "group": "tap@3"
                 },
                 {
-                    "command": "4yue.parseFile",
-                    "when": "resourceLangId == '4yue'",
-                    "group": "4yue@4"
+                    "command": "tap.lexFile",
+                    "when": "resourceLangId == 'tap'",
+                    "group": "tap@4"
+                },
+                {
+                    "command": "tap.parseFile",
+                    "when": "resourceLangId == 'tap'",
+                    "group": "tap@5"
                 }
             ]
-        }
+        },
+        "problemMatchers": [
+            {
+                "name": "tap",
+                "owner": "tap",
+                "source": "tap",
+                "fileLocation": [
+                    "autoDetect",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^(.*?):(\\d+)(?::(\\d+))?(?::|\\s+-)\\s*(error|warning|info|note)\\s*:?\\s*(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        ]
     }
 }
