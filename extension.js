@@ -3,6 +3,7 @@
 const childProcess = require("child_process");
 const path = require("path");
 const vscode = require("vscode");
+const symbols = require("./symbols");
 
 const DIAGNOSTIC_SOURCE = "tap";
 const COMMANDS = [
@@ -53,6 +54,8 @@ function activate(context) {
             vscode.commands.registerCommand(command.id, (resourceUri) => runCompiler(command, resourceUri))
         );
     }
+
+    symbols.registerNavigation(context);
 }
 
 function deactivate() {}

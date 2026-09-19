@@ -3,7 +3,7 @@
     "displayName": "tap Language Support",
     "publisher": "heropoo",
     "description": "Language support and compiler commands for the tap programming language.",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/heropoo/tap-vscode-plugin"
@@ -107,6 +107,16 @@
                         "type": "string"
                     },
                     "description": "Arguments passed when running tap: Parse File. The source file path is appended automatically."
+                },
+                "tap.enableNavigation": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable go to definition, find references, and symbol search for tap files."
+                },
+                "tap.indexExclude": {
+                    "type": "string",
+                    "default": "**/build/**",
+                    "description": "Glob pattern of tap files excluded from the symbol index. Leave empty to index everything."
                 },
                 "tap.enableDiagnostics": {
                     "type": "boolean",

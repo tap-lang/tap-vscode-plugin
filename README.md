@@ -9,6 +9,7 @@ VS Code extension for the tap programming language.
 - Snippets for functions, imports, variables, conditions, loops, and print calls
 - Commands for compiling and running the active file, emitting LLVM IR, lexing, and parsing
 - Compiler diagnostics in the VS Code Problems panel for common `file:line:column: error: message` output
+- Go to definition, find references, file outline, and workspace symbol search
 - A `$tap` problem matcher for VS Code tasks
 
 ## Commands
@@ -35,9 +36,26 @@ automatically.
     "tap.lexArgs": ["-lex"],
     "tap.parseArgs": ["-parse"],
     "tap.enableDiagnostics": true,
-    "tap.clearDiagnosticsOnRun": true
+    "tap.clearDiagnosticsOnRun": true,
+    "tap.enableNavigation": true,
+    "tap.indexExclude": "**/build/**"
 }
 ```
+
+## Navigation
+
+The extension indexes `fn` and `let` declarations in every `.tp` and `.tap` file
+in the workspace, which powers:
+
+- `F12` or `Ctrl+click` — go to definition
+- `Shift+F12` — find all references
+- `Ctrl+Shift+O` — file outline and breadcrumbs
+- `Ctrl+T` — workspace symbol search
+
+Comments and string literals are skipped, so declarations inside them are not
+indexed. Builtin names such as `print` have no definition; jumping on one shows
+a status bar hint instead. Set `tap.enableNavigation` to `false` to turn all of
+this off, and `tap.indexExclude` to change which files are indexed.
 
 If your compiler emits diagnostics in one of these common formats, they are
 shown in the Problems panel:
