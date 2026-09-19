@@ -1,3 +1,5 @@
 node_modules
 *.vsix
 *.log
+
+.workbuddy-ai/

@@ -3,7 +3,7 @@
     "displayName": "tap Language Support",
     "publisher": "heropoo",
     "description": "Language support and compiler commands for the tap programming language.",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "repository": {
         "type": "git",
         "url": "https://github.com/heropoo/tap-vscode-plugin"

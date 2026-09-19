@@ -4,6 +4,9 @@
     "scopeName": "source.tap",
     "patterns": [
         {
+            "include": "#test-block"
+        },
+        {
             "include": "#comments"
         },
         {
@@ -26,6 +29,39 @@
         }
     ],
     "repository": {
+        "test-block": {
+            "name": "comment.block.test.tap",
+            "begin": "/\\*+[ \\t]*--[ \\t]*test\\b",
+            "end": "--[ \\t]*\\*/|\\*/",
+            "beginCaptures": {
+                "0": {
+                    "name": "comment.block.test.header.tap"
+                }
+            },
+            "endCaptures": {
+                "0": {
+                    "name": "comment.block.test.header.tap"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#test-expectation"
+                }
+            ]
+        },
+        "test-expectation": {
+            "begin": "(^[ \\t]*-[ \\t]*)(\\.(?:stdout|stderr|exit))(?=[ \\t]*$)",
+            "beginCaptures": {
+                "1": {
+                    "name": "punctuation.definition.list.begin.tap"
+                },
+                "2": {
+                    "name": "keyword.other.test-expectation.tap"
+                }
+            },
+            "end": "(?=^[ \\t]*-[ \\t]*\\.)|(?=--[ \\t]*\\*/)",
+            "contentName": "string.unquoted.test-expectation.tap"
+        },
         "comments": {
             "patterns": [
                 {

@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- [2026-09-19] Highlight `- .stdout` / `- .stderr` / `- .exit` test expectations inside
+  `-- test` blocks.
 - Rename the language extension to tap.
 - Add `.tp` and `.tap` file association.
 - Add richer tap syntax highlighting, snippets, and language configuration.
