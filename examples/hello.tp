@@ -8,6 +8,9 @@ fn main(): i32 {
 - .stdout
 Hello tap ~ 😀
 
+- .stderr
+no
+
 - .exit
 0
 

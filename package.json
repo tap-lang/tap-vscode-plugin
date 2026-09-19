@@ -1,6 +1,6 @@
 {
     "name": "tap-vscode-plugin",
-    "displayName": "tap Language Support",
+    "displayName": "Tap Language Support",
     "publisher": "heropoo",
     "description": "Language support and compiler commands for the tap programming language.",
     "version": "0.2.0",

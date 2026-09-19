@@ -50,13 +50,19 @@
             ]
         },
         "test-expectation": {
-            "begin": "(^[ \\t]*-[ \\t]*)(\\.(?:stdout|stderr|exit))(?=[ \\t]*$)",
+            "begin": "(^[ \\t]*-[ \\t]*)(?:(\\.stdout)|(\\.stderr)|(\\.exit))(?=[ \\t]*$)",
             "beginCaptures": {
                 "1": {
                     "name": "punctuation.definition.list.begin.tap"
                 },
                 "2": {
-                    "name": "keyword.other.test-expectation.tap"
+                    "name": "markup.inserted.test-expectation.tap"
+                },
+                "3": {
+                    "name": "invalid.test-expectation.tap"
+                },
+                "4": {
+                    "name": "markup.inserted.test-expectation.tap"
                 }
             },
             "end": "(?=^[ \\t]*-[ \\t]*\\.)|(?=--[ \\t]*\\*/)",
