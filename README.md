@@ -4,7 +4,9 @@ VS Code extension for the tap programming language.
 
 ## Features
 
-- Syntax highlighting for `.tp` and `.tap` files
+- Syntax highlighting for `.tp` and `.tap` files, including `struct`, `enum`,
+  `const`, `extern`, `while`, `match`, and `sizeof`, plus type annotations and
+  user-defined type names
 - Line and block comments, bracket matching, auto-closing pairs, indentation, and folding markers
 - Snippets for functions, imports, variables, conditions, loops, and print calls
 - Commands for compiling and running the active file, emitting LLVM IR, lexing, and parsing
@@ -44,13 +46,18 @@ automatically.
 
 ## Navigation
 
-The extension indexes `fn` and `let` declarations in every `.tp` and `.tap` file
-in the workspace, which powers:
+The extension indexes `fn`, `let`, `const`, `struct`, and `enum` declarations in
+every `.tp` and `.tap` file in the workspace, which powers:
 
-- `F12` or `Ctrl+click` — go to definition
+- `F12` or `Ctrl+click` — go to definition, including `struct` and `enum` types
+- `Go to Type Definition` — jump from a variable to its declared type
 - `Shift+F12` — find all references
 - `Ctrl+Shift+O` — file outline and breadcrumbs
 - `Ctrl+T` — workspace symbol search
+
+Type annotations are read from `let` and `const` declarations, so a variable
+declared as `let point: Point` jumps to `struct Point`. Builtin types such as
+`i32` and `string` have no declaration; jumping on one shows a status bar hint.
 
 Comments and string literals are skipped, so declarations inside them are not
 indexed. Builtin names such as `print` have no definition; jumping on one shows
@@ -115,7 +122,7 @@ tap-vscode-plugin-0.1.1.vsix
 Install the generated VSIX from the command line:
 
 ```bash
-code --install-extension tap-vscode-plugin-0.1.1.vsix
+code --install-extension tap-vscode-plugin-0.1.0.vsix
 ```
 
 You can also install it from VS Code with `Extensions: Install from VSIX...`.

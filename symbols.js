@@ -7,13 +7,29 @@ const DEFAULT_EXCLUDE = "**/build/**";
 
 const BUILTINS = new Set(["print", "min", "max", "abs", "square"]);
 
-const FN_RE = /\bfn\s+([A-Za-z_][A-Za-z0-9_]*)/g;
-const LET_RE = /\blet\s+([A-Za-z_][A-Za-z0-9_]*)/g;
+const BUILTIN_TYPES = new Set([
+    "int", "uint",
+    "i8", "u8", "i16", "u16", "i32", "u32", "i64", "u64", "i128", "u128",
+    "f32", "f64",
+    "bool", "string", "array"
+]);
+
+const NAME = "([A-Za-z_][A-Za-z0-9_]*)";
+const OPTIONAL_TYPE = "(?:\\s*:\\s*([A-Za-z_][A-Za-z0-9_]*))?";
+
+const FN_RE = new RegExp(`\\bfn\\s+${NAME}`, "g");
+const LET_RE = new RegExp(`\\blet\\s+${NAME}${OPTIONAL_TYPE}`, "g");
+const CONST_RE = new RegExp(`\\bconst\\s+${NAME}${OPTIONAL_TYPE}`, "g");
+const STRUCT_RE = new RegExp(`\\bstruct\\s+${NAME}`, "g");
+const ENUM_RE = new RegExp(`\\benum\\s+${NAME}`, "g");
 const IDENT_RE = /\b[A-Za-z_][A-Za-z0-9_]*\b/g;
 
 const DECL_PATTERNS = [
     { pattern: FN_RE, kind: vscode.SymbolKind.Function, detail: "fn" },
-    { pattern: LET_RE, kind: vscode.SymbolKind.Variable, detail: "let" }
+    { pattern: LET_RE, kind: vscode.SymbolKind.Variable, detail: "let", typed: true },
+    { pattern: CONST_RE, kind: vscode.SymbolKind.Constant, detail: "const", typed: true },
+    { pattern: STRUCT_RE, kind: vscode.SymbolKind.Struct, detail: "struct" },
+    { pattern: ENUM_RE, kind: vscode.SymbolKind.Enum, detail: "enum" }
 ];
 
 class SymbolIndex {
@@ -90,6 +106,23 @@ class SymbolIndex {
         return locations;
     }
 
+    async typeDefinitionOf(name) {
+        for (const uri of await this.allUris()) {
+            const scanned = await this.scan(uri);
+            if (!scanned) continue;
+
+            const declaration = scanned.symbols.find((symbol) => symbol.name === name && symbol.typeName);
+            if (declaration) {
+                return {
+                    typeName: declaration.typeName,
+                    locations: await this.definitions(declaration.typeName)
+                };
+            }
+        }
+
+        return undefined;
+    }
+
     async references(name) {
         const locations = [];
         for (const uri of await this.allUris()) {
@@ -140,12 +173,13 @@ function scanDocument(document) {
             declaration.pattern.lastIndex = 0;
             let match;
             while ((match = declaration.pattern.exec(masked))) {
-                const start = match.index + match[0].length - match[1].length;
+                const start = match.index + match[0].indexOf(match[1]);
                 symbols.push({
                     name: match[1],
                     kind: declaration.kind,
                     detail: declaration.detail,
-                    range: declarationRange(raw, line, start),
+                    typeName: declaration.typed ? match[2] : undefined,
+                    range: blockRange(document, line),
                     selectionRange: rangeAt(line, start, match[1].length)
                 });
             }
@@ -231,9 +265,31 @@ function maskLine(text, state) {
     return chars.join("");
 }
 
-function declarationRange(raw, line, nameStart) {
-    const indent = raw.length - raw.replace(/^[ \t]+/, "").length;
-    return new vscode.Range(line, indent, line, Math.max(raw.length, indent));
+function blockRange(document, startLine) {
+    const state = { inBlockComment: false, inString: false };
+    let depth = 0;
+    let end = startLine;
+
+    for (let line = startLine; line < document.lineCount; line++) {
+        const masked = maskLine(document.lineAt(line).text, state);
+        for (const char of masked) {
+            if (char === "{") depth++;
+            else if (char === "}") depth--;
+        }
+        if (depth <= 0) {
+            end = line;
+            break;
+        }
+        end = line;
+    }
+
+    const indent = indentOf(document.lineAt(startLine).text);
+    const last = document.lineAt(end).text;
+    return new vscode.Range(startLine, indent, end, Math.max(last.length, indent));
+}
+
+function indentOf(text) {
+    return text.length - text.replace(/^[ \t]+/, "").length;
 }
 
 function rangeAt(line, start, length) {
@@ -253,9 +309,24 @@ async function provideDefinition(index, document, position) {
     if (definitions.length) return definitions;
 
     if (BUILTINS.has(word.name)) {
-        vscode.window.setStatusBarMessage(`tap: ${word.name} is a builtin`, 3000);
+        vscode.window.setStatusBarMessage(`tap: ${word.name} is a builtin function`, 3000);
+    } else if (BUILTIN_TYPES.has(word.name)) {
+        vscode.window.setStatusBarMessage(`tap: ${word.name} is a builtin type`, 3000);
     }
 
+    return undefined;
+}
+
+async function provideTypeDefinition(index, document, position) {
+    const word = wordAt(document, position);
+    if (!word) return undefined;
+
+    const found = await index.typeDefinitionOf(word.name);
+    if (!found) return undefined;
+
+    if (found.locations.length) return found.locations;
+
+    vscode.window.setStatusBarMessage(`tap: ${word.name} is ${found.typeName}, a builtin type`, 3000);
     return undefined;
 }
 
@@ -272,6 +343,11 @@ function registerNavigation(context) {
     context.subscriptions.push(
         vscode.languages.registerDefinitionProvider(selector, {
             provideDefinition: (document, position) => provideDefinition(index, document, position)
+        })
+    );
+    context.subscriptions.push(
+        vscode.languages.registerTypeDefinitionProvider(selector, {
+            provideTypeDefinition: (document, position) => provideTypeDefinition(index, document, position)
         })
     );
     context.subscriptions.push(
