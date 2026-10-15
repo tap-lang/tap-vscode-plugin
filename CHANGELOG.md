@@ -3,6 +3,10 @@
 ## [Unreleased]
 
 
+- [2026-09-19] Add a hover provider: hovering a variable shows its type
+  annotation and the definition of that type (struct/enum member list); hovering
+  a function shows its signature; hovering a parameter shows its `name: type`.
+  Builtin functions and types get a hover too.
 - [2026-09-21] Highlight the missing keywords `const`, `struct`, `enum`,
   `extern`, `while`, `match`, and `sizeof`, the operators `=>`, `!`, `%`, and
   `&`, and user-defined type names in declarations, annotations, and struct

@@ -54,6 +54,9 @@ every `.tp` and `.tap` file in the workspace, which powers:
 - `Shift+F12` — find all references
 - `Ctrl+Shift+O` — file outline and breadcrumbs
 - `Ctrl+T` — workspace symbol search
+- Hover — a variable shows its type annotation and the definition of that type; a
+  function shows its signature; a parameter shows `name: type`. Builtin functions
+  and types also get a hover.
 
 Type annotations are read from `let` and `const` declarations, so a variable
 declared as `let point: Point` jumps to `struct Point`. Builtin types such as
